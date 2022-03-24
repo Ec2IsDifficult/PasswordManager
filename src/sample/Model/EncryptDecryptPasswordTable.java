@@ -22,8 +22,7 @@ public class EncryptDecryptPasswordTable {
         this.cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
     }
 
-    public byte[] encryptPasswordTable(PasswordTable passwordTable, SecretKey masterKey) throws Exception {
-        byte[] serializedPasswordTable = SerializationUtils.serialize(passwordTable);
+    public byte[] encryptPasswordTable(byte[] serializedPasswordTable, SecretKey masterKey) throws Exception {
         IvParameterSpec iv = this.generateIv();
         this.cipher.init(Cipher.ENCRYPT_MODE, masterKey, iv);
         byte[] encryptedBinaryPasswordTable = this.cipher.doFinal(serializedPasswordTable);
@@ -33,12 +32,11 @@ public class EncryptDecryptPasswordTable {
         return stream.toByteArray();
     }
 
-    public PasswordTable decryptPasswordTable(byte[] encryptedIvAndPasswordTableBinary, SecretKey masterKey) throws Exception {
+    public byte[] decryptPasswordTable(byte[] encryptedIvAndPasswordTableBinary, SecretKey masterKey) throws Exception {
         IvParameterSpec iv = getIv(encryptedIvAndPasswordTableBinary);
         byte[] ENCRYPTEDBinaryPasswordTable = getPasswordTable(encryptedIvAndPasswordTableBinary);
         this.cipher.init(Cipher.DECRYPT_MODE, masterKey, iv);
-        byte[] DECRYPTEDBinaryPasswordTable = this.cipher.doFinal(ENCRYPTEDBinaryPasswordTable);
-        return SerializationUtils.deserialize(DECRYPTEDBinaryPasswordTable);
+        return this.cipher.doFinal(ENCRYPTEDBinaryPasswordTable);
     }
 
     public IvParameterSpec generateIv() throws Exception {

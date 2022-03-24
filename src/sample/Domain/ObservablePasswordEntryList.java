@@ -7,18 +7,68 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.Serializable;
 
 public class ObservablePasswordEntryList {
-    private final ObservableList<Pair<String, Node>> passwordEntries;
+    private final ObservableList<EntryHBox> passwordEntries;
 
     public ObservablePasswordEntryList(){
         this.passwordEntries = FXCollections.observableArrayList();
     }
-    public ObservableList<Pair<String, Node>> getPasswordEntries() {
+
+    public void deserializeAllExistingEntries(byte[] binaryObservablePasswordEntryList){
+        PasswordTable passwordTable = SerializationUtils.deserialize(binaryObservablePasswordEntryList);
+        //System.out.println(passwordTable.get(0).siteLabel);
+        this.passwordEntries.addAll(passwordTable);
+    }
+
+    public byte[] serializeObservablePasswordEntryList() {
+        PasswordTable passwordTable = new PasswordTable();
+        System.out.println(this.passwordEntries.subList(0, this.passwordEntries.size()).size()
+                + this.passwordEntries.subList(0, this.passwordEntries.size()).get(0).getSite());
+        passwordTable.addAll(this.passwordEntries.subList(0, this.passwordEntries.size()));
+        return SerializationUtils.serialize(passwordTable);
+    }
+
+    public String addEntry(EntryHBox eHBox){
+        if (doesExist(eHBox)){
+            return "The Site name or Url already exists";
+        }else{
+            this.passwordEntries.add(eHBox);
+            return "Entry added!";
+        }
+    }
+
+    public void deleteEntry(EntryHBox eHBox){
+        this.passwordEntries.remove(eHBox);
+    }
+
+    public boolean doesExist(EntryHBox eHBox) {
+        for (EntryHBox e: this.passwordEntries) {
+            return e.getSite().equals(eHBox.getSite()) || e.getUrl().equals(eHBox.getUrl());
+        }
+        return false;
+    }
+
+
+    public ObservableList<EntryHBox> getPasswordEntries() {
         return this.passwordEntries;
     }
 
-    public void setPasswordEntries(PasswordTable passwordTable) {
+
+    public int getSize() {
+        return this.passwordEntries.size();
+    }
+
+
+
+
+
+
+
+/*    public void setPasswordEntries(PasswordTable passwordTable) {
         HBox hbox = new HBox();
         for (PasswordEntry e : passwordTable) {
             hbox.getChildren().add(new Label(e.getSite()));
@@ -67,5 +117,5 @@ public class ObservablePasswordEntryList {
 
     public Pair<String, Node> createPair(PasswordEntry passwordEntry, HBox HBoxPasswordEntry){
         return new Pair<>(passwordEntry.getSite(), HBoxPasswordEntry);
-    }
+    }*/
 }

@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import sample.Domain.EntryHBox;
 import sample.Domain.ObservablePasswordEntryList;
 import sample.Domain.PasswordEntry;
 
@@ -40,16 +41,13 @@ public class NewEntryController {
 
     @FXML
     public void saveEntryAction(){
-        PasswordEntry passwordEntry = new PasswordEntry(
+        EntryHBox entryHBox = new EntryHBox(
             this.siteField.getText(),
             this.urlField.getText(),
             this.usernameField.getText(),
             this.passwordField.getText()
         );
-            /*if ()){
-
-            }*/
-        this.observablePasswordEntryList.addEntry(passwordEntry);
+        this.observablePasswordEntryList.addEntry(entryHBox);
     }
 
     @FXML

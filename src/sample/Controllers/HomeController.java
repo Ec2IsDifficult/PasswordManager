@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.bouncycastle.util.encoders.Hex;
+import sample.Domain.EntryHBox;
 import sample.Domain.ObservablePasswordEntryList;
 import sample.Domain.PasswordEntry;
 import sample.Domain.PasswordTable;
@@ -55,25 +56,32 @@ public class HomeController {
 
     public void loadAllEntries() throws Exception{
         File file = new File("C:\\Users\\rasse\\IdeaProjects\\PasswordManager\\src\\PasswordTableFile.txt");
+        // Read file
         byte[] passwordTableFile = FileUtil.readAllBytes(file.toPath());
+
+        // Decrypt file
         if (passwordTableFile.length != 0) {
             this.masterPasswordMasterKey.createMasterKey("HelloWorld");
-            PasswordTable passwordTable = this.encDecPasswordTable.decryptPasswordTable(
+            byte[] decryptedPasswordTable = this.encDecPasswordTable.decryptPasswordTable(
                     passwordTableFile, this.masterPasswordMasterKey.getMasterKey()
             );
-            this.observablePasswordEntryList.setPasswordEntries(passwordTable);
+
+            // Add table to observable list
+            this.observablePasswordEntryList.deserializeAllExistingEntries(decryptedPasswordTable);
         }
     }
 
     public void displayAllEntries(){
         Scene scene = this.stage.getScene();
         VBox entryVBox = (VBox) scene.lookup("#allEntryVBox");
-        if (!this.observablePasswordEntryList.getPasswordEntries().isEmpty()) {
-            for (Pair<String, Node> pair: this.observablePasswordEntryList.getPasswordEntries()) {
-                entryVBox.getChildren().add(pair.getValue());
-            }
-        } else {
+        if (this.observablePasswordEntryList.getSize() == 0) {
             entryVBox.getChildren().add(new Label("No password entries exist yet..."));
+        } else {
+            for (EntryHBox e: this.observablePasswordEntryList.getPasswordEntries()) {
+                System.out.println(e.getSite());
+                System.out.println(e);
+                entryVBox.getChildren().add(e);
+            }
         }
     }
 
@@ -81,7 +89,7 @@ public class HomeController {
     public void saveAllAction(ActionEvent event) throws Exception{
         this.masterPasswordMasterKey.createMasterKey("HelloWorld");
         byte[] encryptedPasswordTable = this.encDecPasswordTable.encryptPasswordTable(
-                this.observablePasswordEntryList.getPasswordTable(),
+                this.observablePasswordEntryList.serializeObservablePasswordEntryList(),
                 this.masterPasswordMasterKey.getMasterKey()
                 );
 

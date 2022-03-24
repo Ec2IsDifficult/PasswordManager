@@ -77,11 +77,7 @@ public class HomeController {
         if (this.observablePasswordEntryList.getSize() == 0) {
             entryVBox.getChildren().add(new Label("No password entries exist yet..."));
         } else {
-            for (EntryHBox e: this.observablePasswordEntryList.getPasswordEntries()) {
-                System.out.println(e.getSite());
-                System.out.println(e);
-                entryVBox.getChildren().add(e);
-            }
+            entryVBox.getChildren().addAll(this.observablePasswordEntryList.getPasswordEntries());
         }
     }
 

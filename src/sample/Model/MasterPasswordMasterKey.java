@@ -48,7 +48,6 @@ public class MasterPasswordMasterKey {
             byte[] salt = {0, 1, 2, 3, 4, 5, 6, 7}; // 32 bytes = 256 bits
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WITHHMACSHA256", "BC");
             this.masterKey = factory.generateSecret(new PBEKeySpec(masterPassword.toCharArray(), salt, 1000000, 256));
-            System.out.println(Hex.toHexString(this.masterKey.getEncoded()));
         } catch (Exception e) {
             e.printStackTrace();
         }

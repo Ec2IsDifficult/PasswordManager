@@ -10,6 +10,7 @@ import javafx.util.Pair;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class ObservablePasswordEntryList {
     private final ObservableList<EntryHBox> passwordEntries;
@@ -20,15 +21,16 @@ public class ObservablePasswordEntryList {
 
     public void deserializeAllExistingEntries(byte[] binaryObservablePasswordEntryList){
         PasswordTable passwordTable = SerializationUtils.deserialize(binaryObservablePasswordEntryList);
-        //System.out.println(passwordTable.get(0).siteLabel);
-        this.passwordEntries.addAll(passwordTable);
+        for ( PasswordEntry pe : passwordTable ) {
+            this.passwordEntries.add(new EntryHBox(pe.site, pe.url, pe.username, pe.password));
+        }
     }
 
     public byte[] serializeObservablePasswordEntryList() {
         PasswordTable passwordTable = new PasswordTable();
-        System.out.println(this.passwordEntries.subList(0, this.passwordEntries.size()).size()
-                + this.passwordEntries.subList(0, this.passwordEntries.size()).get(0).getSite());
-        passwordTable.addAll(this.passwordEntries.subList(0, this.passwordEntries.size()));
+        for (EntryHBox ehb : this.passwordEntries) {
+            passwordTable.add(new PasswordEntry(ehb.getSite(), ehb.getUrl(), ehb.getUsername(), ehb.getPassword()));
+        }
         return SerializationUtils.serialize(passwordTable);
     }
 
@@ -52,11 +54,9 @@ public class ObservablePasswordEntryList {
         return false;
     }
 
-
     public ObservableList<EntryHBox> getPasswordEntries() {
         return this.passwordEntries;
     }
-
 
     public int getSize() {
         return this.passwordEntries.size();

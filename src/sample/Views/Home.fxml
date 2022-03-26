@@ -1,16 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.HomeController">
     <top>
-        <Button fx:id="newEntry" mnemonicParsing="false" onAction="#goToCreateNewEntry" text="New Entry" BorderPane.alignment="CENTER" />
+        <GridPane BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.6666463216146" minWidth="10.0" prefWidth="147.99998982747397" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.33328755696616" minWidth="10.0" prefWidth="152.66667683919272" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.66670735677081" minWidth="10.0" prefWidth="164.66668701171875" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="152.99995930989587" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="59.66670735677087" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="163.66667683919272" minHeight="10.0" prefHeight="29.333327611287444" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Site">
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="10.0" />
+               </GridPane.margin></Label>
+                <Label text="Url" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+                <Label text="Username" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+                <Label text="Password" GridPane.columnIndex="3">
+               <GridPane.margin>
+                  <Insets bottom="5.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
+              <Button fx:id="newEntry" mnemonicParsing="false" onAction="#goToCreateNewEntry" text="New Entry" GridPane.columnIndex="5" GridPane.halignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="4.0" />
+               </GridPane.margin></Button>
+            </children>
+        </GridPane>
     </top>
     <center>
-     <VBox fx:id="allEntryVBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
-  </center>
+        <VBox fx:id="entryVBox" BorderPane.alignment="TOP_CENTER">
+
+        </VBox>
+    </center>
    <bottom>
       <Button fx:id="saveAll" mnemonicParsing="false" onAction="#saveAllAction" text="Save all" BorderPane.alignment="CENTER" />
    </bottom>

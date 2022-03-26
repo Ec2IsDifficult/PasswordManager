@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.Controllers.HomeController;
+import sample.Domain.ObservablePasswordEntryList;
 
 public class Main extends Application {
     //HomeController homeController = new HomeController(primaryStage);
@@ -17,7 +18,8 @@ public class Main extends Application {
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));
         HomeController homeController = loader.getController();
-        homeController.start(primaryStage, null);
+        homeController.loadPasswordTableFromMemory();
+        homeController.start(primaryStage);
         primaryStage.show();
     }
 

@@ -1,12 +1,12 @@
 package sample.Domain;
 
-import javafx.scene.Node;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import org.apache.commons.lang3.SerializationUtils;
-
-import java.io.Serializable;
-import java.util.Map;
+import javafx.scene.layout.Priority;
 
 public class EntryHBox extends HBox {
 
@@ -14,26 +14,50 @@ public class EntryHBox extends HBox {
     Label urlLabel = new Label();
     Label usernameLabel = new Label();
     Label passwordLabel = new Label();
-
-
+    GridPane internalGrid = new GridPane();
+    ObservablePasswordEntryList observablePasswordEntryList;
 
     public EntryHBox(String site, String url, String username, String password) {
+        this.observablePasswordEntryList = ObservablePasswordEntryList.getInstance();
         this.siteLabel.setText(site);
         this.urlLabel.setText(url);
         this.usernameLabel.setText(username);
         this.passwordLabel.setText(password);
-        this.getChildren().addAll(
-                this.siteLabel,
-                this.urlLabel,
-                this.usernameLabel,
-                this.passwordLabel
-        );
 
-        this.setSpacing(30);
+        //Setup the internal grid
+        this.internalGrid.add(this.siteLabel, 0,0);
+        this.internalGrid.add(this.urlLabel, 1,0);
+        this.internalGrid.add(this.usernameLabel, 2,0);
+        this.internalGrid.add(this.passwordLabel, 3,0);
+        this.internalGrid.add(new Button("Change"), 4,0);
 
-        for (Node sl: this.getChildren()) {
-            System.out.println(((Label) sl).getText());
-        }
+        Button delete = new Button("Delete");
+        delete.setOnAction(e -> observablePasswordEntryList.deleteEntry(this));
+
+        this.internalGrid.add(delete, 5,0);
+
+        this.internalGrid.setPadding(new Insets(0, 0, 0, 10));
+        this.setMinSize(800, 30);
+
+        this.internalGrid.setMinWidth(800.0);
+
+        ColumnConstraints column1 = new ColumnConstraints(150);
+        ColumnConstraints column2 = new ColumnConstraints(158);
+        ColumnConstraints column3 = new ColumnConstraints(170);
+        ColumnConstraints column4 = new ColumnConstraints(100);
+        ColumnConstraints column5 = new ColumnConstraints(100);
+        ColumnConstraints column6 = new ColumnConstraints(100);
+        column1.setHgrow(Priority.ALWAYS);
+        column2.setHgrow(Priority.ALWAYS);
+        column3.setHgrow(Priority.ALWAYS);
+        column4.setHgrow(Priority.ALWAYS);
+        column5.setHgrow(Priority.ALWAYS);
+        column6.setHgrow(Priority.ALWAYS);
+        this.internalGrid.getColumnConstraints().addAll(column1, column2, column3, column4, column5, column6); // first
+
+        this.getChildren().add(this.internalGrid);
+        this.setHeight(26.3);
+        this.internalGrid.setGridLinesVisible(true);
     }
 
     public void setSite(String site) {

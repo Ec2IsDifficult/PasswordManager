@@ -16,18 +16,22 @@ import sample.Domain.PasswordEntry;
 
 public class NewEntryController {
 
-    private TextField siteField = new TextField();
-    private TextField urlField = new TextField();
-    private TextField usernameField = new TextField();
-    private TextField passwordField = new TextField();
+    @FXML
+    private TextField siteField;
+    @FXML
+    private TextField urlField;
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private TextField passwordField;
     Scene scene;
-    private ObservablePasswordEntryList observablePasswordEntryList;
+    ObservablePasswordEntryList observablePasswordEntryList;
 
     public NewEntryController(){
 
     }
 
-    public void start(Scene scene) throws Exception{
+    public void start(Scene scene) {
         this.scene = scene;
         this.siteField = (TextField) this.scene.lookup("#site");
         this.urlField = (TextField) this.scene.lookup("#url");
@@ -35,8 +39,8 @@ public class NewEntryController {
         this.passwordField = (TextField) this.scene.lookup("#password");
     }
 
-    public void setObservablePasswordEntryList(ObservablePasswordEntryList observablePasswordEntryList){
-        this.observablePasswordEntryList = observablePasswordEntryList;
+    public void setObservablePasswordEntryList(){
+        this.observablePasswordEntryList = ObservablePasswordEntryList.getInstance();
     }
 
     @FXML
@@ -57,8 +61,6 @@ public class NewEntryController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         HomeController homeController = loader.getController();
-        homeController.start(stage, this.observablePasswordEntryList);
-
+        homeController.start(stage);
     }
-
 }

@@ -10,6 +10,15 @@ public class MasterPasswordMasterKey {
     //TODO: Password should be loaded from a password store rather than hardcoded
 
     private SecretKey masterKey = null;
+    private static MasterPasswordMasterKey  instance = new MasterPasswordMasterKey();
+
+    private MasterPasswordMasterKey(){
+
+    }
+
+    public static MasterPasswordMasterKey getInstance() {
+        return instance;
+    }
 
     //TODO: Load the password for creating master-key. Should fill the masterPassword variable.
     public boolean checkForExistingPassword(){

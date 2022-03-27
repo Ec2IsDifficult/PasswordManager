@@ -32,16 +32,8 @@ public class HomeController{
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         this.observablePasswordEntryList = ObservablePasswordEntryList.getInstance();
         this.encDecPasswordTable = new EncryptDecryptPasswordTable();
-
     }
 
-    public void checkForExistingPassword() {
-        this.masterPasswordMasterKey = MasterPasswordMasterKey.getInstance();
-
-        this.masterPasswordMasterKey.checkForExistingPassword();
-
-
-    }
 
     public void loadPasswordTableFromMemory() throws Exception{
         loadAllEntries();
@@ -58,10 +50,16 @@ public class HomeController{
     }
 
     public void displayAllEntries(){
-        if (this.observablePasswordEntryList.getSize() == 0) {
+        Bindings.bindContent(this.entryVBox.getChildren(), this.observablePasswordEntryList.getPasswordEntries());
+        //TODO: Bind this method to run every time something happens. Generally everything that has to do with
+        // a happening in the observable, should be able to be listed as a method that should be runned based
+        // on this happening
+        this.checkIfEmpty();
+    }
+
+    public void checkIfEmpty() {
+        if (this.entryVBox.getChildren().size() == 0) {
             this.entryVBox.getChildren().add(new Label("No password entries exist yet..."));
-        } else {
-            Bindings.bindContent(this.entryVBox.getChildren(), this.observablePasswordEntryList.getPasswordEntries());
         }
     }
 

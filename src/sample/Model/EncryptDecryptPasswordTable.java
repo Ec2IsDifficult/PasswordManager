@@ -21,13 +21,13 @@ public class EncryptDecryptPasswordTable {
     public final Cipher cipher;
     public byte[] password = {0,1,2,3,4,5,6,7,8,9};
     File file = new File("C:\\Users\\rasse\\IdeaProjects\\PasswordManager\\src\\PasswordTableFile.txt");
-    MasterPasswordMasterKey masterPasswordMasterKey = new MasterPasswordMasterKey();
+    MasterPasswordMasterKey masterPasswordMasterKey = MasterPasswordMasterKey.getInstance();
     ObservablePasswordEntryList observablePasswordEntryList;
 
 
     public EncryptDecryptPasswordTable() throws Exception {
         this.cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
-        this.masterPasswordMasterKey.createMasterKey("HelloWorld");
+        this.masterPasswordMasterKey.createMasterKey();
         this.observablePasswordEntryList = ObservablePasswordEntryList.getInstance();
     }
 

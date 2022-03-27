@@ -33,27 +33,26 @@ public class ObservablePasswordEntryList {
         return SerializationUtils.serialize(passwordTable);
     }
 
+    public void changeEntry(EntryHBox eHBox) {
+        this.passwordEntries.remove(eHBox);
+        this.addEntry(eHBox);
+    }
+
     public String addEntry(EntryHBox eHBox){
-        if (doesExist(eHBox)){
-            return "The Site name or Url already exists";
-        }else if (!doesExist(eHBox)){
-            this.passwordEntries.add(eHBox);
-            this.passwordEntries.forEach(System.out::println);
-            System.out.println();
-            return "Entry added!";
+        for (int i = 0; i < this.passwordEntries.size(); i++) {
+            if (((EntryHBox) this.passwordEntries.get(i)).getUrl().equals(eHBox.getUrl())) {
+                System.out.println("Entry changed!");
+                this.passwordEntries.set(i, eHBox);
+            } else {
+                this.passwordEntries.add(eHBox);
+                return "Entry added!";
+            }
         }
         return "";
     }
 
     public void deleteEntry(EntryHBox eHBox){
         this.passwordEntries.remove(eHBox);
-    }
-
-    public boolean doesExist(EntryHBox eHBox) {
-        for (Node ehb: this.passwordEntries) {
-            return ((EntryHBox) ehb).getSite().equals(eHBox.getSite()) || ((EntryHBox) ehb).getUrl().equals(eHBox.getUrl());
-        }
-        return false;
     }
 
     public ObservableList<Node> getPasswordEntries() {

@@ -16,6 +16,9 @@ import sample.Domain.PasswordEntry;
 
 public class NewEntryController {
 
+    Scene scene;
+    ObservablePasswordEntryList observablePasswordEntryList;
+
     @FXML
     private TextField siteField;
     @FXML
@@ -24,8 +27,7 @@ public class NewEntryController {
     private TextField usernameField;
     @FXML
     private TextField passwordField;
-    Scene scene;
-    ObservablePasswordEntryList observablePasswordEntryList;
+
 
     public NewEntryController(){
 
@@ -37,6 +39,13 @@ public class NewEntryController {
         this.urlField = (TextField) this.scene.lookup("#url");
         this.usernameField = (TextField) this.scene.lookup("#username");
         this.passwordField = (TextField) this.scene.lookup("#password");
+    }
+
+    public void setToBeChangedEntry(String site, String url, String username, String password){
+        this.siteField.setText(site);
+        this.urlField.setText(url);
+        this.usernameField.setText(username);
+        this.passwordField.setText(password);
     }
 
     public void setObservablePasswordEntryList(){

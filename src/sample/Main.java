@@ -5,22 +5,29 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Controllers.HomeController;
-import sample.Domain.ObservablePasswordEntryList;
-
+import sample.Controllers.LoginController;
+import sample.Model.EncryptDecryptPasswordTable;
 public class Main extends Application {
-    //HomeController homeController = new HomeController(primaryStage);
-    //loader.setController(homeController);
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/Home.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/LoginView.fxml"));
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));
-        HomeController homeController = loader.getController();
-        homeController.loadPasswordTableFromMemory();
-        homeController.start(primaryStage);
+        LoginController loginController = loader.getController();
+        loginController.start(primaryStage);
         primaryStage.show();
+    }
+
+    @Override
+    public void stop(){
+        try{
+            EncryptDecryptPasswordTable encryptDecryptPasswordTable = new EncryptDecryptPasswordTable();
+            encryptDecryptPasswordTable.encryptPasswordTable();
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

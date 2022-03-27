@@ -7,8 +7,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 public class MasterPasswordMasterKey {
-    //TODO: Password should be loaded from a password store rather than hardcoded
-
+    private final String masterPassword = "HelloWorld";
     private SecretKey masterKey = null;
     private static MasterPasswordMasterKey  instance = new MasterPasswordMasterKey();
 
@@ -51,11 +50,12 @@ public class MasterPasswordMasterKey {
     }
 
     //TODO: This should create the master-key based on the master-password
-    public void createMasterKey(String masterPassword){
+    public void createMasterKey(){
         try {
             // TODO: Get random salt
             byte[] salt = {0, 1, 2, 3, 4, 5, 6, 7}; // 32 bytes = 256 bits
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WITHHMACSHA256", "BC");
+            //TODO: Password should be loaded from a password store rather than hardcoded
             this.masterKey = factory.generateSecret(new PBEKeySpec(masterPassword.toCharArray(), salt, 1000000, 256));
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,5 +69,9 @@ public class MasterPasswordMasterKey {
 
     public SecretKey getMasterKey(){
         return this.masterKey;
+    }
+
+    public String getMasterPassword() {
+        return this.masterPassword;
     }
 }

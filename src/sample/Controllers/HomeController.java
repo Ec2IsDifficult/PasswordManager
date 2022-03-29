@@ -64,7 +64,7 @@ public class HomeController{
     }
 
     @FXML
-    public void saveAllAction(ActionEvent event) throws Exception{
+    public void saveAllAction() throws Exception{
         this.encDecPasswordTable.encryptPasswordTable();
     }
 

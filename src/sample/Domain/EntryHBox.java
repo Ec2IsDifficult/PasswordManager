@@ -58,7 +58,7 @@ public class EntryHBox extends HBox {
         this.internalGrid.add(change, 4,0);
 
         Button delete = new Button("Delete");
-        delete.setOnAction(e -> observablePasswordEntryList.deleteEntry(this));
+        delete.setOnAction(e -> this.observablePasswordEntryList.deleteEntry(this));
         this.internalGrid.add(delete, 5,0);
 
         this.internalGrid.setPadding(new Insets(0, 0, 0, 10));

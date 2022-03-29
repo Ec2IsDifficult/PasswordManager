@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.SerializationUtils;
 
 public class ObservablePasswordEntryList {
-    private final ObservableList<Node> passwordEntries;
+    private ObservableList<Node> passwordEntries;
     private static ObservablePasswordEntryList instance = new ObservablePasswordEntryList();
 
     private ObservablePasswordEntryList(){
@@ -33,34 +33,24 @@ public class ObservablePasswordEntryList {
         return SerializationUtils.serialize(passwordTable);
     }
 
-    public void changeEntry(EntryHBox eHBox) {
-        this.passwordEntries.remove(eHBox);
-        this.addEntry(eHBox);
-    }
-
     public String addEntry(EntryHBox eHBox){
         for (int i = 0; i < this.passwordEntries.size(); i++) {
             if (((EntryHBox) this.passwordEntries.get(i)).getUrl().equals(eHBox.getUrl())) {
-                System.out.println("Entry changed!");
                 this.passwordEntries.set(i, eHBox);
-            } else {
-                this.passwordEntries.add(eHBox);
-                return "Entry added!";
+                return "Entry changed";
             }
         }
-        return "";
+        this.passwordEntries.add(eHBox);
+        return "Entry added!";
     }
 
     public void deleteEntry(EntryHBox eHBox){
+        //System.out.println(this.passwordEntries.size());
         this.passwordEntries.remove(eHBox);
     }
 
     public ObservableList<Node> getPasswordEntries() {
         return this.passwordEntries;
-    }
-
-    public int getSize() {
-        return this.passwordEntries.size();
     }
 
     public static ObservablePasswordEntryList getInstance(){

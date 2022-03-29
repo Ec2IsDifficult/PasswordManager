@@ -8,16 +8,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import sample.Domain.EntryHBox;
 import sample.Domain.ObservablePasswordEntryList;
-import sample.Domain.PasswordEntry;
+import sample.Model.SuggestStrongPassword;
 
 public class NewEntryController {
 
     Scene scene;
     ObservablePasswordEntryList observablePasswordEntryList;
+    SuggestStrongPassword suggestStrongPassword;
 
     @FXML
     private TextField siteField;
@@ -27,7 +27,10 @@ public class NewEntryController {
     private TextField usernameField;
     @FXML
     private TextField passwordField;
-
+    @FXML
+    private TextField repeatedPasswordField;
+    @FXML
+    private Label equalPasswordFeedback;
 
     public NewEntryController(){
 
@@ -39,6 +42,9 @@ public class NewEntryController {
         this.urlField = (TextField) this.scene.lookup("#url");
         this.usernameField = (TextField) this.scene.lookup("#username");
         this.passwordField = (TextField) this.scene.lookup("#password");
+        this.repeatedPasswordField = (TextField) this.scene.lookup("#passwordRepeat");
+        this.equalPasswordFeedback = (Label) this.scene.lookup("#equalPasswordFeedback");
+        this.suggestStrongPassword = new SuggestStrongPassword();
     }
 
     public void setToBeChangedEntry(String site, String url, String username, String password){
@@ -54,13 +60,27 @@ public class NewEntryController {
 
     @FXML
     public void saveEntryAction(){
-        EntryHBox entryHBox = new EntryHBox(
-            this.siteField.getText(),
-            this.urlField.getText(),
-            this.usernameField.getText(),
-            this.passwordField.getText()
-        );
-        this.observablePasswordEntryList.addEntry(entryHBox);
+
+        if(!this.siteField.getText().equals("")
+                && !this.urlField.getText().equals("")
+                && !this.usernameField.getText().equals("")
+                && !this.passwordField.getText().equals("")) {
+
+            if(this.passwordField.getText().equals(this.repeatedPasswordField.getText())){
+                EntryHBox entryHBox = new EntryHBox(
+                        this.siteField.getText(),
+                        this.urlField.getText(),
+                        this.usernameField.getText(),
+                        this.passwordField.getText()
+                );
+                this.observablePasswordEntryList.addEntry(entryHBox);
+                this.equalPasswordFeedback.setText("Entry added!");
+            }else{
+                this.equalPasswordFeedback.setText("Passwords must match!");
+            }
+        }else{
+            this.equalPasswordFeedback.setText("Missing information!");
+        }
     }
 
     @FXML
@@ -72,4 +92,12 @@ public class NewEntryController {
         HomeController homeController = loader.getController();
         homeController.start(stage);
     }
+
+    @FXML
+    private void suggestStrongPasswordAction() {
+        String suggestedPassword = this.suggestStrongPassword.generatePassword();
+        this.repeatedPasswordField.setText(suggestedPassword);
+        this.passwordField.setText(suggestedPassword);
+    }
+
 }

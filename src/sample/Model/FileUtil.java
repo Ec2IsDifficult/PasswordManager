@@ -4,8 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileUtil {
-    public static String KeyStorePath = "src/keyStore.txt";
-    public static String keyStorePassword = "soda";
 
     public static byte[] readAllBytes(Path path){
         byte[] bytesRead = {};

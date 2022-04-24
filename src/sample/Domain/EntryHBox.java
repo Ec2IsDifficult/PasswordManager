@@ -16,14 +16,13 @@ import sample.Controllers.NewEntryController;
 
 public class EntryHBox extends HBox {
 
-    Label siteLabel = new Label();
-    Label urlLabel = new Label();
-    Label usernameLabel = new Label();
-    Label passwordLabel = new Label();
-    GridPane internalGrid = new GridPane();
+    private final Label siteLabel = new Label();
+    private final Label urlLabel = new Label();
+    private final Label usernameLabel = new Label();
+    private final Label passwordLabel = new Label();
 
     // Each hbox entry needs access to logic from the singleton password table observable list
-    ObservablePasswordEntryList observablePasswordEntryList;
+    private final ObservablePasswordEntryList observablePasswordEntryList;
 
     // This hbox is for displaying the entries in the home view
     public EntryHBox(String site, String url, String username, String password) {
@@ -36,10 +35,11 @@ public class EntryHBox extends HBox {
         this.passwordLabel.setText(password);
 
         // Setup the internal grid
-        this.internalGrid.add(this.siteLabel, 0,0);
-        this.internalGrid.add(this.urlLabel, 1,0);
-        this.internalGrid.add(this.usernameLabel, 2,0);
-        this.internalGrid.add(this.passwordLabel, 3,0);
+        GridPane internalGrid = new GridPane();
+        internalGrid.add(this.siteLabel, 0,0);
+        internalGrid.add(this.urlLabel, 1,0);
+        internalGrid.add(this.usernameLabel, 2,0);
+        internalGrid.add(this.passwordLabel, 3,0);
 
         // Button for going to change the specific entry
         Button change = new Button("Change");
@@ -59,16 +59,16 @@ public class EntryHBox extends HBox {
             }
 
         });
-        this.internalGrid.add(change, 4,0);
+        internalGrid.add(change, 4,0);
 
         // Button for deleting the selected entry
         Button delete = new Button("Delete");
         delete.setOnAction(e -> this.observablePasswordEntryList.deleteEntry(this));
-        this.internalGrid.add(delete, 5,0);
+        internalGrid.add(delete, 5,0);
 
-        this.internalGrid.setPadding(new Insets(0, 0, 0, 10));
+        internalGrid.setPadding(new Insets(0, 0, 0, 10));
         this.setMinSize(800, 30);
-        this.internalGrid.setMinWidth(800.0);
+        internalGrid.setMinWidth(800.0);
 
         // Logic for spreading out the labels inside the hbox
         ColumnConstraints column1 = new ColumnConstraints(150);
@@ -83,11 +83,11 @@ public class EntryHBox extends HBox {
         column4.setHgrow(Priority.ALWAYS);
         column5.setHgrow(Priority.ALWAYS);
         column6.setHgrow(Priority.ALWAYS);
-        this.internalGrid.getColumnConstraints().addAll(column1, column2, column3, column4, column5, column6); // first
+        internalGrid.getColumnConstraints().addAll(column1, column2, column3, column4, column5, column6); // first
 
-        this.getChildren().add(this.internalGrid);
+        this.getChildren().add(internalGrid);
         this.setHeight(26.3);
-        this.internalGrid.setGridLinesVisible(true);
+        internalGrid.setGridLinesVisible(true);
     }
 
     public void setSite(String site) {

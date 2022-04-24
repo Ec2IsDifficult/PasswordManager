@@ -11,17 +11,17 @@ import org.apache.commons.lang3.SerializationUtils;
 public class ObservablePasswordEntryList {
 
     // Observable list
-    private ObservableList<Node> passwordEntries = FXCollections.observableArrayList();
+    private final ObservableList<Node> passwordEntries = FXCollections.observableArrayList();
 
     // Making this a singleton
-    private static ObservablePasswordEntryList instance = new ObservablePasswordEntryList();
+    private final static ObservablePasswordEntryList instance = new ObservablePasswordEntryList();
 
 
     public void deserializeAllExistingEntries(byte[] binaryPasswordTable){
         // Deserializing the password table and filling it into the observable password table list
         PasswordTable passwordTable = SerializationUtils.deserialize(binaryPasswordTable);
         for ( PasswordEntry pe : passwordTable ) {
-            this.passwordEntries.add(new EntryHBox(pe.site, pe.url, pe.username, pe.password));
+            this.passwordEntries.add(new EntryHBox(pe.getSite(), pe.getUrl(), pe.getUsername(), pe.getPassword()));
         }
     }
 

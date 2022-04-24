@@ -16,21 +16,17 @@ import java.security.Security;
 
 public class HomeController{
 
-    Stage stage;
-
     // Class for logic for encrypting and decrypting the password table
-    EncryptDecryptPasswordTable encDecPasswordTable;
+    private final EncryptDecryptPasswordTable encDecPasswordTable;
 
     // The actual password table rapped in an observable list
-    ObservablePasswordEntryList observablePasswordEntryList;
-    MasterPasswordMasterKey masterPasswordMasterKey;
+    private final ObservablePasswordEntryList observablePasswordEntryList;
 
     // Vertical box for all the entries in the password table
     @FXML
     VBox entryVBox;
 
     public HomeController() throws Exception{
-
         // Adding the provider and getting the instance of the observable list
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         this.observablePasswordEntryList = ObservablePasswordEntryList.getInstance();
@@ -39,19 +35,18 @@ public class HomeController{
 
     // This functions sets the stage after construction, and it displays all password table entries
     public void start(Stage stage){
-        this.stage = stage;
-        this.entryVBox = (VBox) this.stage.getScene().lookup("#entryVBox");
+        this.entryVBox = (VBox) stage.getScene().lookup("#entryVBox");
         displayAllEntries();
     }
 
     // Logic for binding the vbox with the singleton observable password table list
-    public void displayAllEntries(){
+    private void displayAllEntries(){
         Bindings.bindContent(this.entryVBox.getChildren(), this.observablePasswordEntryList.getPasswordEntries());
         this.checkIfEmpty();
     }
 
     // Display string if the password table is empty
-    public void checkIfEmpty() {
+    private void checkIfEmpty() {
         if (this.entryVBox.getChildren().size() == 0) {
             this.entryVBox.getChildren().add(new Label("No password entries exist yet..."));
         }
@@ -59,7 +54,7 @@ public class HomeController{
 
     // Encrypt and write the password table for the save all button
     @FXML
-    public void saveAllAction() throws Exception{
+    private void saveAllAction() throws Exception{
         this.encDecPasswordTable.encryptPasswordTable();
     }
 

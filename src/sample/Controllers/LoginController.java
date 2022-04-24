@@ -12,16 +12,16 @@ import sample.Model.MasterPasswordMasterKey;
 
 
 public class LoginController {
-    Stage stage;
+    private Stage stage;
 
     // Login controller needs access to the logic that handles decryption and creation of the symmetric key
-    MasterPasswordMasterKey masterPasswordMasterKey = MasterPasswordMasterKey.getInstance();
+    private final MasterPasswordMasterKey masterPasswordMasterKey = MasterPasswordMasterKey.getInstance();
     @FXML
-    TextField passwordAttempt;
+    private TextField passwordAttempt;
     @FXML
-    Label feedbackLabel;
+    private Label feedbackLabel;
     @FXML
-    EncryptDecryptPasswordTable encDecPasswordTable;
+    private final EncryptDecryptPasswordTable encDecPasswordTable;
 
     public LoginController() throws Exception{
         this.encDecPasswordTable = new EncryptDecryptPasswordTable();
@@ -36,7 +36,7 @@ public class LoginController {
 
     // Creates the symmetric key by giving it the password attempt
     @FXML
-    public void loginAction() throws Exception {
+    private void loginAction() throws Exception {
         this.masterPasswordMasterKey.createMasterKey(this.passwordAttempt.getText());
         try{
             // Tries to decrypt the table, if it fails then the exception is caught and a feedback message is given
@@ -49,7 +49,7 @@ public class LoginController {
     }
 
     // If login is successful then the home view with propper controller is loaded.
-    public void loginSuccessful() throws Exception{
+    private void loginSuccessful() throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/Views/Home.fxml"));
         Parent root = loader.load();
         this.stage.setScene(new Scene(root));

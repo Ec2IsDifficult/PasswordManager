@@ -15,12 +15,10 @@ import sample.Model.SuggestStrongPassword;
 
 public class NewEntryController {
 
-    Scene scene;
-
     // Singleton password table class wrapped in an observable list
-    ObservablePasswordEntryList observablePasswordEntryList;
+    private ObservablePasswordEntryList observablePasswordEntryList;
     // Class for suggesting strong password
-    SuggestStrongPassword suggestStrongPassword;
+    private SuggestStrongPassword suggestStrongPassword;
 
     // FXML input fields for user input
     @FXML
@@ -37,18 +35,16 @@ public class NewEntryController {
     private Label equalPasswordFeedback;
 
     public NewEntryController(){
-
     }
 
     // Logic for starting the view properly
     public void start(Scene scene) {
-        this.scene = scene;
-        this.siteField = (TextField) this.scene.lookup("#site");
-        this.urlField = (TextField) this.scene.lookup("#url");
-        this.usernameField = (TextField) this.scene.lookup("#username");
-        this.passwordField = (TextField) this.scene.lookup("#password");
-        this.repeatedPasswordField = (TextField) this.scene.lookup("#passwordRepeat");
-        this.equalPasswordFeedback = (Label) this.scene.lookup("#equalPasswordFeedback");
+        this.siteField = (TextField) scene.lookup("#site");
+        this.urlField = (TextField) scene.lookup("#url");
+        this.usernameField = (TextField) scene.lookup("#username");
+        this.passwordField = (TextField) scene.lookup("#password");
+        this.repeatedPasswordField = (TextField) scene.lookup("#passwordRepeat");
+        this.equalPasswordFeedback = (Label) scene.lookup("#equalPasswordFeedback");
         this.suggestStrongPassword = new SuggestStrongPassword();
     }
 
@@ -67,7 +63,7 @@ public class NewEntryController {
 
     // Input validation for saving an entry. Runs the addEntry function in the password table singleton class.
     @FXML
-    public void saveEntryAction(){
+    private void saveEntryAction(){
 
         // No field must be empty
         if(!this.siteField.getText().equals("")
@@ -111,5 +107,4 @@ public class NewEntryController {
         this.repeatedPasswordField.setText(suggestedPassword);
         this.passwordField.setText(suggestedPassword);
     }
-
 }

@@ -14,6 +14,11 @@ import sample.Model.MasterPasswordMasterKey;
 import java.nio.charset.StandardCharsets;
 
 public class ChangeMasterPasswordController {
+
+
+    public ChangeMasterPasswordController(){
+    }
+
     private Scene scene;
 
     @FXML
@@ -47,7 +52,7 @@ public class ChangeMasterPasswordController {
                 HomeController homeController = loader.getController();
                 homeController.start(stage);
             }else{
-                this.wrongRepeatPassword.setText("New passwords don't match!");
+                this.wrongRepeatPassword.setText("Password mismatch!");
             }
         }else{
             this.wrongPassword.setText("Wrong password!");

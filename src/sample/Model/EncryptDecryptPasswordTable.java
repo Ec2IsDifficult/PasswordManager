@@ -15,18 +15,18 @@ import java.util.Arrays;
 // Contains all encryption logic
 public class EncryptDecryptPasswordTable {
 
-    public final Cipher cipher;
+    private final Cipher cipher;
 
     // Get system specific path
-    Path currentDirectoryPath = Paths.get("").toAbsolutePath();
-    File file = new File(currentDirectoryPath + "\\src\\PasswordTableFile.txt");
+    private final Path currentDirectoryPath = Paths.get("").toAbsolutePath();
+    private final File file = new File(currentDirectoryPath + "\\src\\PasswordTableFile.txt");
 
     // Getting the instance of the master key. This must be a singleton because it contains the master-password
     // for creating the master key based on a new salt (the program changes salt with each encryption)
-    MasterPasswordMasterKey masterPasswordMasterKey = MasterPasswordMasterKey.getInstance();
+    private final MasterPasswordMasterKey masterPasswordMasterKey = MasterPasswordMasterKey.getInstance();
 
     // Getting the single instance of the observable list
-    ObservablePasswordEntryList observablePasswordEntryList;
+    private final ObservablePasswordEntryList observablePasswordEntryList;
 
     private final byte[] passwordTableFile;
 
@@ -73,7 +73,7 @@ public class EncryptDecryptPasswordTable {
     }
 
     // Generating random iv bytes
-    public IvParameterSpec generateIv() throws Exception {
+    private IvParameterSpec generateIv() throws Exception {
         SecureRandom secureRandom = SecureRandom.getInstance("DEFAULT", "BC");
         byte[] iv = new byte[16];
         secureRandom.nextBytes(iv);

@@ -61,7 +61,7 @@ public class MasterPasswordMasterKey {
     }
 
     // Generate random salt
-    public void generateSalt() throws Exception {
+    private void generateSalt() throws Exception {
         SecureRandom secureRandom = SecureRandom.getInstance("DEFAULT", "BC");
         this.salt = new byte[32];
         secureRandom.nextBytes(this.salt);

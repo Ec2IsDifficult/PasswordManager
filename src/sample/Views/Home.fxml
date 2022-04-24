@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.HomeController">
     <top>
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
@@ -62,6 +62,18 @@
         </VBox>
     </center>
    <bottom>
-      <Button fx:id="saveAll" mnemonicParsing="false" onAction="#saveAllAction" text="Save all" BorderPane.alignment="CENTER" />
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="saveAll" alignment="CENTER" mnemonicParsing="false" onAction="#saveAllAction" text="Save all" />
+            <Button fx:id="changeMasterPassword" onAction="#changeMasterPasswordAction" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Change master password" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
    </bottom>
 </BorderPane>

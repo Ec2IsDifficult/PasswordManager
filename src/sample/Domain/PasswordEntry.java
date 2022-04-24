@@ -1,6 +1,7 @@
 package sample.Domain;
 import java.io.Serializable;
 
+// Class for storing each entry and its information
 public class PasswordEntry implements Serializable {
     public String site;
     public String url;

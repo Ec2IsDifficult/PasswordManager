@@ -1,7 +1,5 @@
 package sample.Domain;
 
-import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -14,7 +12,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import sample.Controllers.HomeController;
 import sample.Controllers.NewEntryController;
 
 public class EntryHBox extends HBox {
@@ -24,24 +21,31 @@ public class EntryHBox extends HBox {
     Label usernameLabel = new Label();
     Label passwordLabel = new Label();
     GridPane internalGrid = new GridPane();
+
+    // Each hbox entry needs access to logic from the singleton password table observable list
     ObservablePasswordEntryList observablePasswordEntryList;
 
+    // This hbox is for displaying the entries in the home view
     public EntryHBox(String site, String url, String username, String password) {
         this.observablePasswordEntryList = ObservablePasswordEntryList.getInstance();
+
+        // Setting up the labels
         this.siteLabel.setText(site);
         this.urlLabel.setText(url);
         this.usernameLabel.setText(username);
         this.passwordLabel.setText(password);
 
-        //Setup the internal grid
+        // Setup the internal grid
         this.internalGrid.add(this.siteLabel, 0,0);
         this.internalGrid.add(this.urlLabel, 1,0);
         this.internalGrid.add(this.usernameLabel, 2,0);
         this.internalGrid.add(this.passwordLabel, 3,0);
 
+        // Button for going to change the specific entry
         Button change = new Button("Change");
         change.setOnAction(e -> {
             try {
+                // This button loads an entire new entry view
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample/Views/NewEntry.fxml"));
                 Parent root = loader.load();
                 Stage stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
@@ -57,15 +61,16 @@ public class EntryHBox extends HBox {
         });
         this.internalGrid.add(change, 4,0);
 
+        // Button for deleting the selected entry
         Button delete = new Button("Delete");
         delete.setOnAction(e -> this.observablePasswordEntryList.deleteEntry(this));
         this.internalGrid.add(delete, 5,0);
 
         this.internalGrid.setPadding(new Insets(0, 0, 0, 10));
         this.setMinSize(800, 30);
-
         this.internalGrid.setMinWidth(800.0);
 
+        // Logic for spreading out the labels inside the hbox
         ColumnConstraints column1 = new ColumnConstraints(150);
         ColumnConstraints column2 = new ColumnConstraints(158);
         ColumnConstraints column3 = new ColumnConstraints(170);

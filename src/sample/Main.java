@@ -14,6 +14,8 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/LoginView.fxml"));
         Parent root = loader.load();
         primaryStage.setScene(new Scene(root));
+
+        // Prepare the first controller and give the primary stage to it
         LoginController loginController = loader.getController();
         loginController.start(primaryStage);
         primaryStage.show();
@@ -21,6 +23,7 @@ public class Main extends Application {
 
     @Override
     public void stop(){
+        // Ensuring encryption of the password table when the program is closed
         try{
             EncryptDecryptPasswordTable encryptDecryptPasswordTable = new EncryptDecryptPasswordTable();
             encryptDecryptPasswordTable.encryptPasswordTable();

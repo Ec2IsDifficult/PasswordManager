@@ -1,39 +1,49 @@
 package sample.Domain;
 
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.SerializationUtils;
 
+
+// The purpose of this class is to wrap the password table in an observable list. This allows us to utilize
+// the functionality from the observable list. There is also add and delete functionality for this class
 public class ObservablePasswordEntryList {
-    private ObservableList<Node> passwordEntries;
+
+    // Observable list
+    private ObservableList<Node> passwordEntries = FXCollections.observableArrayList();
+
+    // Making this a singleton
     private static ObservablePasswordEntryList instance = new ObservablePasswordEntryList();
 
-    private ObservablePasswordEntryList(){
-        this.passwordEntries = FXCollections.observableArrayList();
-    }
 
-    public void deserializeAllExistingEntries(byte[] binaryObservablePasswordEntryList){
-        PasswordTable passwordTable = SerializationUtils.deserialize(binaryObservablePasswordEntryList);
+    public void deserializeAllExistingEntries(byte[] binaryPasswordTable){
+        // Deserializing the password table and filling it into the observable password table list
+        PasswordTable passwordTable = SerializationUtils.deserialize(binaryPasswordTable);
         for ( PasswordEntry pe : passwordTable ) {
             this.passwordEntries.add(new EntryHBox(pe.site, pe.url, pe.username, pe.password));
         }
     }
 
-    public byte[] serializeObservablePasswordEntryList() {
+    public byte[] serializePasswordTable() {
+
+        // New simple password table
         PasswordTable passwordTable = new PasswordTable();
+
+        // Filling it with entries from the password table list
         for (Node ehb : this.passwordEntries) {
             passwordTable.add(new PasswordEntry(
                     ((EntryHBox) ehb).getSite(), ((EntryHBox) ehb).getUrl(), ((EntryHBox) ehb).getUsername(), ((EntryHBox) ehb).getPassword())
             );
         }
+
+        // Return a serialized password table
         return SerializationUtils.serialize(passwordTable);
     }
 
     public String addEntry(EntryHBox eHBox){
+
+        // Adding an entry. Checking if the entry's url already exists. The url is the "primary key"
         for (int i = 0; i < this.passwordEntries.size(); i++) {
             if (((EntryHBox) this.passwordEntries.get(i)).getUrl().equals(eHBox.getUrl())) {
                 this.passwordEntries.set(i, eHBox);
@@ -45,7 +55,6 @@ public class ObservablePasswordEntryList {
     }
 
     public void deleteEntry(EntryHBox eHBox){
-        //System.out.println(this.passwordEntries.size());
         this.passwordEntries.remove(eHBox);
     }
 

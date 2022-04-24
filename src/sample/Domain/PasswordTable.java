@@ -1,10 +1,10 @@
 package sample.Domain;
 
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.List;
 
+// This class is only kept for filling the entries into it, when we need to encrypt and write the entire
+// password table
 public class PasswordTable extends ArrayList<PasswordEntry> {
 
 }

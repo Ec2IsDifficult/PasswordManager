@@ -1,77 +1,82 @@
 package sample.Model;
 
-import org.bouncycastle.util.encoders.Hex;
-
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.security.SecureRandom;
 
 public class MasterPasswordMasterKey {
-    private final String masterPassword = "HelloWorld";
     private SecretKey masterKey = null;
-    private static MasterPasswordMasterKey  instance = new MasterPasswordMasterKey();
 
-    private MasterPasswordMasterKey(){
-
+    public String getMasterPassword() {
+        return masterPassword;
     }
 
+    public void setMasterPassword(String masterPassword) {
+        this.masterPassword = masterPassword;
+    }
+
+    private String masterPassword = null;
+    private byte[] salt;
+
+    // Only one instance of this class because it stores information
+    private static MasterPasswordMasterKey  instance;
+
+    // Singleton
+    static {
+        try {
+            instance = new MasterPasswordMasterKey();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private EncryptDecryptPasswordTable encryptDecryptPasswordTable;
     public static MasterPasswordMasterKey getInstance() {
         return instance;
     }
 
-    //TODO: Load the password for creating master-key. Should fill the masterPassword variable.
-    public boolean checkForExistingPassword(){
-        /*
-        * AT APPLICATION START PASSWORD-BARRIER VIEW RUNS:
-        *
-        * while(!checkPassword()){
-        *   The controller should ask and run the createMasterPassword which in turn runs the storePassword.
-        *}
-        *
-        * The controller should run the askForCorrectPasswordFunction -> loads, compares with user input
-        * The controller should run the createMasterKey function.
-        * The controller should run the decrypt function.
-        */
-        return false;
+
+    private MasterPasswordMasterKey() throws Exception{
+        this.encryptDecryptPasswordTable = new EncryptDecryptPasswordTable();
     }
 
-    //TODO: This should ideally be done inside the password-database
-    public boolean comparePassword() {
-        return false;
-    }
-
-    //TODO: Load password from database
-    public String loadPassword(){
-        return null;
-    }
-
-    public void createMasterPassword(String password){
-        //TODO: Create password for creating master-key. Should fill the masterPassword variable.
-    }
-
-    //TODO: This should create the master-key based on the master-password
-    public void createMasterKey(){
+    public void createMasterKey(String masterPassword){
+        // Getting the master password from the login controller
+        this.masterPassword = masterPassword;
         try {
-            // TODO: Get random salt
-            byte[] salt = {0, 1, 2, 3, 4, 5, 6, 7}; // 32 bytes = 256 bits
+            // If no salt exists generate a new one
+            if (this.encryptDecryptPasswordTable.getSalt().length == 0) {
+                generateSalt();
+                // Else, retrieve the existing salt
+            }else{
+                this.salt = encryptDecryptPasswordTable.getSalt();
+            }
+            // Generate master key with 1.000.000 hashing iterations and a salt
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WITHHMACSHA256", "BC");
-            //TODO: Password should be loaded from a password store rather than hardcoded
             this.masterKey = factory.generateSecret(new PBEKeySpec(masterPassword.toCharArray(), salt, 1000000, 256));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //TODO: End of life store the password
-    public void StorePassword(){
-
+    // Generate random salt
+    public void generateSalt() throws Exception {
+        SecureRandom secureRandom = SecureRandom.getInstance("DEFAULT", "BC");
+        this.salt = new byte[32];
+        secureRandom.nextBytes(this.salt);
     }
+
+    // Generate new salt and a new key based on it
+    public void remakeSalt() throws Exception{
+        generateSalt();
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WITHHMACSHA256", "BC");
+        this.masterKey = factory.generateSecret(new PBEKeySpec(masterPassword.toCharArray(), salt, 1000000, 256));
+    }
+
 
     public SecretKey getMasterKey(){
         return this.masterKey;
     }
-
-    public String getMasterPassword() {
-        return this.masterPassword;
-    }
+    public byte[] getSalt() {return this.salt;}
 }

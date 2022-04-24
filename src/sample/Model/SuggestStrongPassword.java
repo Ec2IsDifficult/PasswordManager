@@ -4,6 +4,7 @@ import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 
+// Using the passay library for suggesting strong password
 public class SuggestStrongPassword {
     CharacterRule alphabets = new CharacterRule(EnglishCharacterData.Alphabetical);
     CharacterRule digits = new CharacterRule(EnglishCharacterData.Digit);

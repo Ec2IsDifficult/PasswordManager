@@ -1,5 +1,6 @@
 package sample.Model;
 
+import org.bouncycastle.util.encoders.Hex;
 import sample.Domain.ObservablePasswordEntryList;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -42,6 +43,8 @@ public class EncryptDecryptPasswordTable {
     public void encryptPasswordTable() throws Exception {
         // Serializes for encrpytion
         byte[] serializedPasswordTable = this.observablePasswordEntryList.serializePasswordTable();
+        System.out.println(Hex.toHexString(serializedPasswordTable) + "<-- Just before encryption password table");
+
         // Generating random iv
         IvParameterSpec iv = this.generateIv();
         // remakes the salt (new salt each time)
@@ -67,6 +70,8 @@ public class EncryptDecryptPasswordTable {
             // Decrypting
             this.cipher.init(Cipher.DECRYPT_MODE, this.masterPasswordMasterKey.getMasterKey(), iv);
             byte[] decryptedPasswordTable = this.cipher.doFinal(ENCRYPTEDBinaryPasswordTable);
+            System.out.println(Hex.toHexString(decryptedPasswordTable) + "<-- Same byte string as just before encryption (This is after encryption)");
+
             // Deserializing
             this.observablePasswordEntryList.deserializeAllExistingEntries(decryptedPasswordTable);
         }
